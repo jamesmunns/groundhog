@@ -6,6 +6,7 @@ static T0: Lazy<Instant> = Lazy::new(|| {
     Instant::now()
 });
 
+#[derive(Default, Clone)]
 pub struct Timer<const TPS: u32>;
 
 impl<const TPS: u32> Timer<TPS> {
@@ -21,7 +22,6 @@ impl<const TPS: u32> RollingTimer for Timer<TPS>
 {
     type Tick = u32;
     const TICKS_PER_SECOND: Self::Tick = TPS;
-
 
     fn is_initialized(&self) -> bool {
         true
