@@ -1,6 +1,6 @@
 [package]
 name = "groundhog"
-version = "0.2.1"
+version = "0.2.2"
 description = "A rolling timer abstraction"
 repository = "https://github.com/groundhog"
 authors = ["James Munns <james.munns@ferrous-systems.com>"]
@@ -21,3 +21,6 @@ default = []
 u128 = []
 instant = ["std", "once_cell"]
 std = []
+
+[package.metadata.docs.rs]
+all-features = true

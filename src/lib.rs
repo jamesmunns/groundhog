@@ -12,7 +12,7 @@
 use core::ops::Div;
 use sealed::{Promote, RollingSince};
 
-#[cfg(any(test, feature = "std"))]
+#[cfg(any(test, doctest, feature = "std"))]
 pub mod std_timer;
 
 pub trait RollingTimer {
