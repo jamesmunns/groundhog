@@ -4,10 +4,16 @@
 //!
 //! Make sure you poll it often enough.
 
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(
+    not(any(test, feature = "std")),
+    no_std
+)]
 
 use core::ops::Div;
 use sealed::{Promote, RollingSince};
+
+#[cfg(any(test, feature = "std"))]
+pub mod std_timer;
 
 pub trait RollingTimer {
     type Tick: RollingSince + Promote + Div<Output = Self::Tick>;
@@ -137,6 +143,10 @@ mod test {
     impl RollingTimer for TestTimer {
         type Tick = u32;
         const TICKS_PER_SECOND: Self::Tick = 10;
+
+        fn is_initialized(&self) -> bool {
+            true
+        }
 
         fn get_ticks(&self) -> u32 {
             self.0.load(Ordering::SeqCst)

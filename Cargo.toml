@@ -1,6 +1,6 @@
 [package]
 name = "groundhog"
-version = "0.2.0"
+version = "0.2.1"
 description = "A rolling timer abstraction"
 repository = "https://github.com/groundhog"
 authors = ["James Munns <james.munns@ferrous-systems.com>"]
@@ -12,7 +12,12 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 
-[dependencies]
+[dependencies.once_cell]
+version = "1.8.0"
+optional = true
 
 [features]
+default = []
 u128 = []
+instant = ["std", "once_cell"]
+std = []
