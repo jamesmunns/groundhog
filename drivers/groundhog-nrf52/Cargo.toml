@@ -2,9 +2,10 @@
 name = "groundhog-nrf52"
 version = "0.3.0"
 description = "A rolling timer abstraction for the nrf52"
-repository = "https://github.com/jamesmunns/anachro"
+repository = "https://github.com/jamesmunns/groundhog"
 authors = ["James Munns <james.munns@ferrous-systems.com>"]
 edition = "2018"
+readme = "../../README.md"
 
 categories = [
     "embedded",
@@ -18,10 +19,10 @@ nrf52840-hal = "0.12.1"
 embedded-hal = "0.2.4"
 
 [dependencies.groundhog]
-version = "0.2"
-path = "../groundhog"
+version = "0.2.5"
+path = "../../core"
 
 [features]
-# TODO: REMOVE HAX
+# TODO: Support other nrf52 flavors
 52840 = []
 default = ["52840"]

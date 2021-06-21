@@ -46,12 +46,16 @@ use embedded_hal::blocking::delay::{DelayUs, DelayMs};
 
 use core::sync::atomic::{AtomicPtr, Ordering};
 
-use nrf52840_hal::pac;
-
-pub mod drivers;
-
 static TIMER_PTR: AtomicPtr<RegBlock0> = AtomicPtr::new(core::ptr::null_mut());
 
+/// A global rolling timer
+///
+/// This must be initialized with a timer (like `TIMER0`) once,
+/// on startup, before valid timer values will be returned. Until then,
+/// a timer value of 0 ticks will always be returned.
+///
+/// At the moment, this is limited to a 32-bit 1MHz timer, which has a
+/// maximum observable time delta of 71m34s.
 pub struct GlobalRollingTimer;
 
 impl GlobalRollingTimer {
