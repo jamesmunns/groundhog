@@ -1,8 +1,8 @@
 [package]
 name = "groundhog"
-version = "0.2.4"
+version = "0.2.5"
 description = "A rolling timer abstraction"
-repository = "https://github.com/groundhog"
+repository = "https://github.com/jamesmunns/groundhog"
 authors = ["James Munns <james.munns@ferrous-systems.com>"]
 edition = "2018"
 readme = "README.md"
