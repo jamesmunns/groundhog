@@ -1,28 +1,22 @@
 [package]
 name = "groundhog-nrf52"
-version = "0.4.0"
+version = "0.4.0"                                           # TODO: bump
 description = "A rolling timer abstraction for the nrf52"
 repository = "https://github.com/jamesmunns/groundhog"
 authors = ["James Munns <james.munns@ferrous-systems.com>"]
-edition = "2018"
+edition = "2021"
 readme = "../../README.md"
 
-categories = [
-    "embedded",
-    "no-std",
-]
+categories = ["embedded", "no-std"]
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-cortex-m-rtic = "0.5"
-nrf52840-hal = "0.16"
+cortex-m-rtic = "1"
 embedded-hal = "0.2"
-
-[dependencies.groundhog]
-version = "0.2.5"
-path = "../../core"
+nrf52840-hal = "0.16"
+groundhog = { version = "0.2.5", path = "../../core" }
 
 [features]
-# TODO: Support other nrf52 flavors
-52840 = []
 default = ["52840"]
+52840 = []
+# TODO: Support other nrf52 flavors
