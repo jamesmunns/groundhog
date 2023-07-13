@@ -1,10 +1,8 @@
 use crate::RollingTimer;
-use std::time::{Instant, Duration};
+use std::time::{Duration, Instant};
 
 use once_cell::sync::Lazy;
-static T0: Lazy<Instant> = Lazy::new(|| {
-    Instant::now()
-});
+static T0: Lazy<Instant> = Lazy::new(|| Instant::now());
 
 #[derive(Default, Clone)]
 pub struct Timer<const TPS: u32>;
@@ -18,8 +16,7 @@ impl<const TPS: u32> Timer<TPS> {
     }
 }
 
-impl<const TPS: u32> RollingTimer for Timer<TPS>
-{
+impl<const TPS: u32> RollingTimer for Timer<TPS> {
     type Tick = u32;
     const TICKS_PER_SECOND: Self::Tick = TPS;
 
@@ -40,9 +37,12 @@ impl<const TPS: u32> RollingTimer for Timer<TPS>
 
 #[cfg(test)]
 mod test {
+    use std::{
+        thread::sleep,
+        time::{Duration, Instant},
+    };
+
     use super::Timer;
-    use std::time::{Instant, Duration};
-    use std::thread::sleep;
     use crate::RollingTimer;
 
     #[test]
@@ -54,13 +54,8 @@ mod test {
         let stop_gh = timer.millis_since(start_gh);
         let stop = start.elapsed();
 
-        assert!(
-            (stop >= Duration::from_millis(998))
-            && (stop <= Duration::from_millis(1002))
-        );
-        assert!(
-            (stop_gh >= 998) && (stop_gh <= 1002)
-        );
+        assert!((stop >= Duration::from_millis(998)) && (stop <= Duration::from_millis(1002)));
+        assert!((stop_gh >= 998) && (stop_gh <= 1002));
     }
 
     #[test]
@@ -72,13 +67,8 @@ mod test {
         let stop_gh = timer.millis_since(start_gh);
         let stop = start.elapsed();
 
-        assert!(
-            (stop >= Duration::from_millis(998))
-            && (stop <= Duration::from_millis(1002))
-        );
-        assert!(
-            (stop_gh >= 998) && (stop_gh <= 1002)
-        );
+        assert!((stop >= Duration::from_millis(998)) && (stop <= Duration::from_millis(1002)));
+        assert!((stop_gh >= 998) && (stop_gh <= 1002));
     }
 
     #[test]
@@ -90,12 +80,7 @@ mod test {
         let stop_gh = timer.millis_since(start_gh);
         let stop = start.elapsed();
 
-        assert!(
-            (stop >= Duration::from_millis(998))
-            && (stop <= Duration::from_millis(1002))
-        );
-        assert!(
-            (stop_gh >= 998) && (stop_gh <= 1002)
-        );
+        assert!((stop >= Duration::from_millis(998)) && (stop <= Duration::from_millis(1002)));
+        assert!((stop_gh >= 998) && (stop_gh <= 1002));
     }
 }

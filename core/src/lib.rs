@@ -4,16 +4,13 @@
 //!
 //! Make sure you poll it often enough.
 
-#![cfg_attr(
-    not(any(test, feature = "std")),
-    no_std
-)]
-
-use core::ops::Div;
-use sealed::{Promote, RollingSince};
+#![cfg_attr(not(any(test, doctest, feature = "std")), no_std)]
 
 #[cfg(any(test, doctest, feature = "std"))]
 pub mod std_timer;
+
+use core::ops::Div;
+use sealed::{Promote, RollingSince};
 
 pub trait RollingTimer {
     type Tick: RollingSince + Promote + Div<Output = Self::Tick>;
