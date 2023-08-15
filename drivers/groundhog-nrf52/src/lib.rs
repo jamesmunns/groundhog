@@ -10,13 +10,13 @@
 //! To use the the `GlobalRollingTimer` with RTIC, it first needs to be selected
 //! as the monotonic timer (here on top of the nrf52840 hal):
 //!
-//! ```
+//! ```ignore
 //! #[rtic::app(device = nrf52840_hal::pac, peripherals = true, monotonic = groundhog_nrf52::GlobalRollingTimer)]
 //! ```
 //!
 //! During the init phase it needs to be initialized with a concrete timer implementation:
 //!
-//! ```
+//! ```ignore
 //! #[init]
 //! fn init(ctx: init::Context) -> init::LateResources {
 //!     // using TIMER0 here
@@ -27,7 +27,7 @@
 //!
 //! Then, you can specify the schedule interval in microseconds as part of your task:
 //!
-//! ```
+//! ```ignore
 //! #[task]
 //! fn my_task(ctx: my_task::Context) {
 //!     ctx.schedule
@@ -39,10 +39,10 @@
 //!
 #![no_std]
 
+use embedded_hal::blocking::delay::{DelayMs, DelayUs};
 use groundhog::RollingTimer;
 use nrf52840_hal::{pac::timer0::RegisterBlock as RegBlock0, timer::Instance};
-use rtic::{Fraction, Monotonic};
-use embedded_hal::blocking::delay::{DelayUs, DelayMs};
+use rtic::Monotonic;
 
 use core::sync::atomic::{AtomicPtr, Ordering};
 
@@ -76,26 +76,28 @@ impl GlobalRollingTimer {
 
 impl Monotonic for GlobalRollingTimer {
     type Instant = i32;
+    type Duration = i32;
 
-    fn ratio() -> Fraction {
-        Fraction {
-            numerator: 64,
-            denominator: 1,
-        }
-    }
-
-    fn now() -> Self::Instant {
-        Self::new().get_ticks() as i32
+    fn now(&mut self) -> Self::Instant {
+        self.get_ticks() as i32
     }
 
     fn zero() -> Self::Instant {
         0
     }
 
-    unsafe fn reset() {
+    unsafe fn reset(&mut self) {
         if let Some(t0) = TIMER_PTR.load(Ordering::SeqCst).as_ref() {
             t0.tasks_clear.write(|w| w.bits(1));
         }
+    }
+
+    fn set_compare(&mut self, _instant: Self::Instant) {
+        todo!()
+    }
+
+    fn clear_compare_flag(&mut self) {
+        todo!()
     }
 }
 
@@ -120,7 +122,7 @@ impl RollingTimer for GlobalRollingTimer {
 impl DelayUs<u32> for GlobalRollingTimer {
     fn delay_us(&mut self, us: u32) {
         let start = self.get_ticks();
-        while self.ticks_since(start) < us { }
+        while self.ticks_since(start) < us {}
     }
 }
 
